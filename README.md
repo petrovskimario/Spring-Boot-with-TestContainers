@@ -307,6 +307,17 @@ public class StudentRepositoryMockitoTest {
 ```
 
 This test doesn't actually test anything. Since the query is mocked, even if the query is invalid SQL this query will pass. <br/>
+
+## Key Benefits of Using TestContainers
+1. **Realistic Testing Environment:** TestContainers allows us to test with the same dependencies we use in production, reducing the mismatches between testing and live environments.
+2. **Comprehensive Coverage:** It provides end-to-end testing capabilities, ensuring that all components of the system interact correctly.
+3. **Ease of Setup:** With pre-configured containers for common services, setting up and tearing down environments becomes effortless.
+
+## Limitations of Mockito + H2 Approach
+1. **Limited Integration Testing:** Mocking services means we cannot fully test the integration points, potentially leading to missed issues.
+2. **Different Database Behavior:** Using H2 instead of PostgreSQL can lead to differences in query behavior and missed database-specific issues.
+3. **Maintenance Overhead:** Managing mocks and maintaining their accuracy as the application evolves can become a headache.
+
 Always remember, with great power comes great responsibility! <br/>
 
 Happy Coding!
