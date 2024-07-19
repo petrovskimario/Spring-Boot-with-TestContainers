@@ -28,6 +28,23 @@ There are two different tests for this use case:
 * One using TestContainers to start a PostgreSQL database and a Kafka broker
 * One using Mockito to mock the Validation Service call and H2 Database
 
+The architecture can be illustrated as the following :
+![Arch - Copy - Copy](https://github.com/user-attachments/assets/345f7ed8-9aea-4816-afc0-e641c49dd0ac)
+ 
+Let’s see how much coverage they provide.
+We will use the following colors to identify what is being mocked and what isn’t.
+RED → Mocked
+BLUE → Real Integration
+
+With TestContainers 
+![TestContainers](https://github.com/user-attachments/assets/0d682585-b763-49ad-9ac3-f7685c7ee5dc)
+
+With Mockito
+![Mockito](https://github.com/user-attachments/assets/04a4d076-78a7-45af-9096-2d4dbf3767e1)
+
+
+
+
 ## Built With
 
 * [Spring Boot](https://spring.io/projects/spring-boot)
