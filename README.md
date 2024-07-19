@@ -140,8 +140,8 @@ The next test in this class is with high GPA and it should be saved in the datab
 ```
 
 3. The next test is a test using TestContainers to spin PostgreSQL instance and test a native query.
-This test purpose is to demonstrate that the RANK() function is not working the same in H2 and PostgreSQL.
-The test class is : StudentRepositoryTest
+This test purpose is to demonstrate that the RANK() function is not working the same in H2 and PostgreSQL. <br/>
+The test class is : StudentRepositoryTest <br/>
 We have the following native query : 
 ```
     @Query(value = "SELECT s.id, s.first_name AS firstName, s.last_name AS lastName, s.email, s.gpa, " +
@@ -237,7 +237,7 @@ public class KafkaConsumerServiceTest {
     }
 ```
 
-We can see here that we are mocking the call to Validation Service so whatever the student GPA is, he will always be saved in database since the actual call to Validation Service is never made.
+We can see here that we are mocking the call to Validation Service so whatever the student GPA is, he will always be saved in database since the actual call to Validation Service is never made. <br/>
 Same can be seen for the test with low GPA
 ```
     @Test
@@ -306,8 +306,8 @@ public class StudentRepositoryMockitoTest {
 }
 ```
 
-This test doesn't actually test anything. Since the query is mocked, even if the query is invalid SQL this query will pass.
-Always remember, with great power comes great responsibility!
+This test doesn't actually test anything. Since the query is mocked, even if the query is invalid SQL this query will pass. <br/>
+Always remember, with great power comes great responsibility! <br/>
 
 Happy Coding!
 
