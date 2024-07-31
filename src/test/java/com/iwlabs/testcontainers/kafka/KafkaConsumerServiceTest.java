@@ -10,10 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,17 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @ActiveProfiles("testcontainers")
 public class KafkaConsumerServiceTest {
-
-    @Container
-    public static GenericContainer<?> gpaValidatorApp = new GenericContainer<>("gpavalidator")
-            .withExposedPorts(8081);
-
-    @DynamicPropertySource
-    static void registerValidatorBaseUrl(DynamicPropertyRegistry registry) {
-        String baseUrl = "http://" + gpaValidatorApp.getHost() + ":" + gpaValidatorApp.getMappedPort(8081);
-        registry.add("validator.baseUrl", () -> baseUrl);
-    }
-
     @Autowired
     private StudentRepository studentRepository;
 
