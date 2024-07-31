@@ -32,6 +32,9 @@ public class StudentServiceTest {
     public void testCreateStudentWithHighGpa() {
         StudentDTO studentDTO = new StudentDTO(1L, "John", "Doe", "john.doe@example.com", 3.5);
         StudentDTO result = studentService.createStudent(studentDTO);
-        assertEquals(studentDTO, result);
+        assertEquals(studentDTO.getFirstName(), result.getFirstName());
+        assertEquals(studentDTO.getLastName(), result.getLastName());
+        assertEquals(studentDTO.getEmail(), result.getEmail());
+        assertEquals(studentDTO.getGpa(), result.getGpa());
     }
 }

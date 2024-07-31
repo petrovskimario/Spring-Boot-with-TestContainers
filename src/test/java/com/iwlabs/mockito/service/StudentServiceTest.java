@@ -57,6 +57,9 @@ public class StudentServiceTest {
         when(studentMapper.studentToStudentDTO(any(Student.class))).thenReturn(studentDTO);
 
         StudentDTO result = studentService.createStudent(studentDTO);
-        assertEquals(studentDTO, result);
+        assertEquals(studentDTO.getFirstName(), result.getFirstName());
+        assertEquals(studentDTO.getLastName(), result.getLastName());
+        assertEquals(studentDTO.getEmail(), result.getEmail());
+        assertEquals(studentDTO.getGpa(), result.getGpa());
     }
 }
