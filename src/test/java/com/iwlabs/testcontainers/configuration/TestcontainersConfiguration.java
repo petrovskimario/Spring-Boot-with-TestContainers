@@ -38,7 +38,4 @@ public class TestcontainersConfiguration {
 		String baseUrl = "http://" + gpaValidatorContainer.getHost() + ":" + gpaValidatorContainer.getMappedPort(8081);
 		System.setProperty("validator.baseUrl", baseUrl);
 	}
-
-
-
 }

@@ -62,21 +62,38 @@ There are multiple tests written in the project. Let's review them one by one.
 #### TestContainers
 
 1. First we have the TestcontainersConfiguration class which will spin a Kafka container and a PostgreSQL Container. <br/>
+2. In the same configuration we will also add the Validation Service container. <br/>
 The class is having the following code :
 ```   
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
-   @Bean
-   @ServiceConnection
-   KafkaContainer kafkaContainer() {
-       return new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
-   }
 
-   @Bean
-   @ServiceConnection
-   PostgreSQLContainer<?> postgresContainer() {
-       return new PostgreSQLContainer<>(DockerImageName.parse("postgres:latest"));
-   }
+	private static final GenericContainer<?> gpaValidatorContainer = new GenericContainer<>(DockerImageName.parse("gpavalidator:latest"))
+			.withExposedPorts(8081);
+
+	@Bean
+	@ServiceConnection
+	KafkaContainer kafkaContainer() {
+		return new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+	}
+
+	@Bean
+	@ServiceConnection
+	PostgreSQLContainer<?> postgresContainer() {
+		return new PostgreSQLContainer<>(DockerImageName.parse("postgres:latest"));
+	}
+
+	@Bean
+	GenericContainer<?> gpaValidatorContainer() {
+		return gpaValidatorContainer;
+	}
+
+	@PostConstruct
+	public void startGpaValidatorContainer() {
+		gpaValidatorContainer.start();
+		String baseUrl = "http://" + gpaValidatorContainer.getHost() + ":" + gpaValidatorContainer.getMappedPort(8081);
+		System.setProperty("validator.baseUrl", baseUrl);
+	}
 }
 ```
 
@@ -84,16 +101,6 @@ That's it. Spring Boot will use auto configuration to connect our application to
 
 2. Then we have the first test using TestContainers which is in the class KafkaConsumerServiceTest that will also spin up a custom docker container from our validation service : <br/>
 ```
-    @Container
-    public static GenericContainer<?> gpaValidatorApp = new GenericContainer<>("gpavalidator")
-            .withExposedPorts(8081);
-
-    @DynamicPropertySource
-    static void registerValidatorBaseUrl(DynamicPropertyRegistry registry) {
-        String baseUrl = "http://" + gpaValidatorApp.getHost() + ":" + gpaValidatorApp.getMappedPort(8081);
-        registry.add("validator.baseUrl", () -> baseUrl);
-    }
-
     @Autowired
     private StudentRepository studentRepository;
 
