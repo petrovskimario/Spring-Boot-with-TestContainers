@@ -11,8 +11,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Slf4j
 public class ValidateGpaHttpService {
 
+    private final WebClient webClient;
+
     @Autowired
-    private WebClient webClient;
+    public ValidateGpaHttpService(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     public boolean validateGpa(StudentValidationInput input) {
         return callStudentValidationService(input).isValid();

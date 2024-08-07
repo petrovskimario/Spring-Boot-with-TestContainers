@@ -16,9 +16,9 @@ import java.util.List;
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    private StudentRepository studentRepository;
-    private StudentMapper studentMapper;
-    private ValidateGpaHttpService validateGpaHttpService;
+    private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
+    private final ValidateGpaHttpService validateGpaHttpService;
 
     public StudentServiceImpl(StudentRepository studentRepository, StudentMapper studentMapper, ValidateGpaHttpService validateGpaHttpService) {
         this.studentRepository = studentRepository;

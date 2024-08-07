@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(Endpoints.VALIDATE_GPA)
 public class GpaValidatorController {
 
+    private final StudentValidationService studentValidationService;
+
     @Autowired
-    private StudentValidationService studentValidationService;
+    public GpaValidatorController(StudentValidationService studentValidationService) {
+        this.studentValidationService = studentValidationService;
+    }
 
     @PostMapping
     public StudentValidationOutput validateGpa(@RequestBody StudentValidationInput input) {

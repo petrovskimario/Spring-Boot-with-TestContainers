@@ -15,14 +15,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class KafkaConsumerService {
 
-    @Autowired
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
+    private final ValidateGpaHttpService validateGpaHttpService;
 
-    @Autowired
-    private StudentMapper studentMapper;
-
-    @Autowired
-    private ValidateGpaHttpService validateGpaHttpService;
+    public KafkaConsumerService(StudentRepository studentRepository, StudentMapper studentMapper, ValidateGpaHttpService validateGpaHttpService) {
+        this.studentRepository = studentRepository;
+        this.studentMapper = studentMapper;
+        this.validateGpaHttpService = validateGpaHttpService;
+    }
 
     @KafkaListener(topics = "${kafka.topic.student}")
     public void listen(StudentDTO message) {
