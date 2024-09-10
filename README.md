@@ -117,10 +117,10 @@ That's it. Spring Boot will use auto configuration to connect our application to
 
         kafkaSenderService.sendStudentDTO(message);
 
-        Thread.sleep(5000);
-
-        assertThat(studentRepository.count()).isEqualTo(0);
-        assertThat(studentRepository.findByEmail(message.getEmail())).isEmpty();
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+            assertThat(studentRepository.count()).isEqualTo(0);
+            assertThat(studentRepository.findByEmail(message.getEmail())).isEmpty();
+        });
     }
 ```
 
@@ -139,10 +139,10 @@ The next test in this class is with high GPA and it should be saved in the datab
 
         kafkaSenderService.sendStudentDTO(message);
 
-        Thread.sleep(5000);
-
-        assertThat(studentRepository.count()).isEqualTo(1);
-        assertThat(studentRepository.findByEmail(message.getEmail())).isNotEmpty();
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+            assertThat(studentRepository.count()).isEqualTo(1);
+            assertThat(studentRepository.findByEmail(message.getEmail())).isNotEmpty();
+        });
     }
 ```
 

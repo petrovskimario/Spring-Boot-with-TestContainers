@@ -12,7 +12,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @ContextConfiguration(classes = TestcontainersConfiguration.class)
 @SpringBootTest
@@ -35,10 +38,10 @@ public class KafkaConsumerServiceTest {
 
         kafkaSenderService.sendStudentDTO(message);
 
-        Thread.sleep(5000);
-
-        assertThat(studentRepository.count()).isEqualTo(0);
-        assertThat(studentRepository.findByEmail(message.getEmail())).isEmpty();
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+            assertThat(studentRepository.count()).isEqualTo(0);
+            assertThat(studentRepository.findByEmail(message.getEmail())).isEmpty();
+        });
     }
 
     @Test
@@ -51,10 +54,10 @@ public class KafkaConsumerServiceTest {
 
         kafkaSenderService.sendStudentDTO(message);
 
-        Thread.sleep(5000);
-
-        assertThat(studentRepository.count()).isEqualTo(1);
-        assertThat(studentRepository.findByEmail(message.getEmail())).isNotEmpty();
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+            assertThat(studentRepository.count()).isEqualTo(1);
+            assertThat(studentRepository.findByEmail(message.getEmail())).isNotEmpty();
+        });
     }
 
     @AfterEach

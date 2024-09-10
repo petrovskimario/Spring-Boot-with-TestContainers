@@ -7,34 +7,39 @@ import org.springframework.context.annotation.Bean;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
 
+	@Container
 	private static final GenericContainer<?> gpaValidatorContainer = new GenericContainer<>(DockerImageName.parse("gpavalidator:latest"))
 			.withExposedPorts(8081);
 
+	@Container
+	private static final KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+
+	@Container
+	private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest");
+
 	@Bean
 	@ServiceConnection
-	KafkaContainer kafkaContainer() {
-		return new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+	public KafkaContainer kafkaContainer() {
+		return kafkaContainer;
 	}
 
 	@Bean
 	@ServiceConnection
-	PostgreSQLContainer<?> postgresContainer() {
-		return new PostgreSQLContainer<>(DockerImageName.parse("postgres:latest"));
-	}
-
-	@Bean
-	GenericContainer<?> gpaValidatorContainer() {
-		return gpaValidatorContainer;
+	public PostgreSQLContainer<?> postgresContainer() {
+		return postgresContainer;
 	}
 
 	@PostConstruct
 	public void startGpaValidatorContainer() {
-		gpaValidatorContainer.start();
+		if(!gpaValidatorContainer.isRunning()) {
+			gpaValidatorContainer.start();
+		}
 		String baseUrl = "http://" + gpaValidatorContainer.getHost() + ":" + gpaValidatorContainer.getMappedPort(8081);
 		System.setProperty("validator.baseUrl", baseUrl);
 	}
